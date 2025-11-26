@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Nouvel article
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1>Nouvel article</h1>
+        {# {{ form(form) }} #}
+        {{ form_start(form) }}
+            {{ form_widget(form)}}
+            <button type="submit" class="btn btn-primary mt-3">Créer</button>
+            <a href="{{ path('app_article')}}">Annuler</a>
+            {{ form_end(form) }}
+        </div>
+    {% endblock %}
