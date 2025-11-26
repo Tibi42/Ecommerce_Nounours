@@ -6,46 +6,64 @@
 
 {% block body %}
 	<div class="container mt-5">
-		<h1>Liste des articles</h1>
-
-		<a href="{{ path('app_article_new') }}" class="btn btn-primary mb-3">Créer un nouvel article</a>
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Liste des articles</h1>
+			<a href="{{ path('app_article_new') }}" class="btn btn-primary">Créer un nouvel article</a>
+		</div>
 
 		{% if articles|length > 0 %}
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Nom</th>
-						<th>Taille</th>
-						<th>Prix</th>
-						<th>Date de publication</th>
-						<th>Publié</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for article in articles %}
-						<tr>
-							<td>{{ article.id }}</td>
-							<td>{{ article.name }}</td>
-							<td>{{ article.size ?? '-' }}</td>
-							<td>{{ article.price }}
-								€</td>
-							<td>{{ article.publishAt ? article.publishAt|date('d/m/Y') : '-' }}</td>
-							<td>{{ article.ispublished ?? 'Non' }}</td>
-							<td>
-								<a href="{{ path('app_article_edit', {id: article.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
-								<form method="post" action="{{ path('app_article_delete', {id: article.id}) }}" style="display: inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
-									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
-									<button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
-								</form>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+			<div class="row g-4">
+				{% for article in articles %}
+					<div class="col-md-6 col-lg-4">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body">
+								<div class="d-flex justify-content-between align-items-start mb-3">
+									<h5 class="card-title mb-0">{{ article.name }}</h5>
+									<span class="badge bg-secondary">#{{ article.id }}</span>
+								</div>
+
+								<div class="mb-3">
+									<p class="card-text mb-2">
+										<strong>Taille:</strong>
+										{{ article.size ?? '-' }}
+									</p>
+									<p class="card-text mb-2">
+										<strong>Prix:</strong>
+										<span class="text-success fw-bold">{{ article.price }}
+											€</span>
+									</p>
+									{% if article.publishAt %}
+										<p class="card-text mb-2">
+											<small class="text-muted">
+												<strong>Publié le:</strong>
+												{{ article.publishAt|date('d/m/Y') }}
+											</small>
+										</p>
+									{% endif %}
+									<p class="card-text">
+										<strong>Statut:</strong>
+										<span class="badge {{ article.ispublished ? 'bg-success' : 'bg-secondary' }}">
+											{{ article.ispublished ?? 'Non publié' }}
+										</span>
+									</p>
+								</div>
+							</div>
+							<div class="card-footer bg-transparent border-top-0">
+								<div class="btn-group w-100" role="group">
+									<a href="{{ path('app_article_edit', {id: article.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+									<form method="post" action="{{ path('app_article_delete', {id: article.id}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+										<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 		{% else %}
-			<div class="alert alert-info">
+			<div class="alert alert-info text-center">
+				<i class="bi bi-info-circle"></i>
 				Aucun article trouvé.
 			</div>
 		{% endif %}

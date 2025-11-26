@@ -23,13 +23,13 @@ class Comment
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $content = null;
 
-    #[ORM\Column(length: 45)]
+    #[ORM\Column(length: 45, nullable: true)]
     private ?string $ipAddress = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $isApproved = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTime $createAt = null;
 
     public function getId(): ?int

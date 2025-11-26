@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Liste des tags
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Liste des tags</h1>
+			<a href="{{ path('app_tag_new') }}" class="btn btn-primary">Créer un nouveau tag</a>
+		</div>
+
+		{% if tags|length > 0 %}
+			<div class="row g-4">
+				{% for tag in tags %}
+					<div class="col-md-6 col-lg-4">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body">
+								<div class="d-flex justify-content-between align-items-start mb-3">
+									<h5 class="card-title mb-0">{{ tag.name }}</h5>
+									<span class="badge bg-secondary">#{{ tag.id }}</span>
+								</div>
+
+								<div class="mb-3">
+									{% if tag.slug %}
+										<p class="card-text mb-2">
+											<strong>Slug:</strong>
+											<code class="small">{{ tag.slug }}</code>
+										</p>
+									{% endif %}
+									{% if tag.color %}
+										<p class="card-text mb-0">
+											<strong>Couleur:</strong>
+											<span class="badge" style="background-color: {{ tag.color }}; color: white;">
+												{{ tag.color }}
+											</span>
+										</p>
+									{% endif %}
+								</div>
+							</div>
+							<div class="card-footer bg-transparent border-top-0">
+								<div class="btn-group w-100" role="group">
+									<a href="{{ path('app_tag_edit', {id: tag.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+									<form method="post" action="{{ path('app_tag_delete', {id: tag.id}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce tag ?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ tag.id) }}">
+										<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<div class="alert alert-info text-center">
+				<i class="bi bi-info-circle"></i>
+				Aucun tag trouvé.
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

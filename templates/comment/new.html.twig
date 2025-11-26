@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Nouveau commentaire
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1>Nouveau commentaire</h1>
+		{{ form_start(form) }}
+		{{ form_widget(form)}}
+		<button type="submit" class="btn btn-primary mt-3">Créer</button>
+		<a href="{{ path('app_comment_list')}}">Annuler</a>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}
+

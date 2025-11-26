@@ -22,7 +22,7 @@ final class ArticleController extends AbstractController
     }
     // creation d'un nouvel article
 
-    #[Route('/new', name: 'app_article_new', methods: ["GET", "POST"])]
+    #[Route('/article/new', name: 'app_article_new', methods: ["GET", "POST"])]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $article = new Nounours();
@@ -40,7 +40,7 @@ final class ArticleController extends AbstractController
 
             $this->addFlash('success', 'Article créer avec succes !');
 
-            return $this->redirectToRoute('app_article');
+            return $this->redirectToRoute('app_article_list');
         }
 
         return $this->render('article/new.html.twig', [
@@ -49,7 +49,7 @@ final class ArticleController extends AbstractController
     }
 
     // liste 
-    #[Route('/list', name: 'app_article_list', methods: ['GET'])]
+    #[Route('/article/list', name: 'app_article_list', methods: ['GET'])]
     public function list(NounoursRepository $nounoursRepository): Response
     {
         return $this->render('article/list.html.twig', [
@@ -58,7 +58,7 @@ final class ArticleController extends AbstractController
     }
 
     // edition
-    #[Route('/edit/{id}', name: 'app_article_edit', methods: ['GET', 'POST'])]
+    #[Route('/article/edit/{id}', name: 'app_article_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EntityManagerInterface $em, Nounours $nounours): Response
     {
         // creatoin du formulaire
@@ -82,15 +82,14 @@ final class ArticleController extends AbstractController
     }
 
     // suppression
-    #[Route('/delete/{id}', name: 'app_article_delete', methods: ['POST'])]
+    #[Route('/article/delete/{id}', name: 'app_article_delete', methods: ['POST'])]
     public function delete(Request $request, EntityManagerInterface $em, Nounours $nounours): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$nounours->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $nounours->getId(), $request->getPayload()->getString('_token'))) {
             $em->remove($nounours);
             $em->flush();
-        
-            $this->addFlash('success', 'Article supprimé avec succès !');
 
+            $this->addFlash('success', 'Article supprimé avec succès !');
         }
 
         return $this->redirectToRoute('app_article_list');

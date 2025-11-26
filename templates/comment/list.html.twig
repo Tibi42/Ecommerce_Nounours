@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Liste des commentaires
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Liste des commentaires</h1>
+			<a href="{{ path('app_comment_new') }}" class="btn btn-primary">Créer un nouveau commentaire</a>
+		</div>
+
+		{% if comments|length > 0 %}
+			<div class="row g-4">
+				{% for comment in comments %}
+					<div class="col-md-6 col-lg-4">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body">
+								<div class="d-flex justify-content-between align-items-start mb-3">
+									<div>
+										<h6 class="card-title mb-1">{{ comment.authorName ?? 'Anonyme' }}</h6>
+										{% if comment.authorEmail %}
+											<small class="text-muted">{{ comment.authorEmail }}</small>
+										{% endif %}
+									</div>
+									<span class="badge bg-secondary">#{{ comment.id }}</span>
+								</div>
+
+								{% if comment.content %}
+									<div class="mb-3">
+										<p class="card-text">
+											{{ comment.content|length > 150 ? comment.content|slice(0, 150) ~ '...' : comment.content }}
+										</p>
+									</div>
+								{% endif %}
+
+								<div class="mb-3">
+									<p class="card-text mb-2">
+										<strong>Statut:</strong>
+										{% if comment.isApproved %}
+											<span class="badge bg-success">Approuvé</span>
+										{% else %}
+											<span class="badge bg-danger">Non approuvé</span>
+										{% endif %}
+									</p>
+									{% if comment.ipAddress %}
+										<p class="card-text mb-2">
+											<small class="text-muted">
+												<strong>IP:</strong>
+												{{ comment.ipAddress }}
+											</small>
+										</p>
+									{% endif %}
+									{% if comment.createAt %}
+										<p class="card-text mb-0">
+											<small class="text-muted">
+												<strong>Créé le:</strong>
+												{{ comment.createAt|date('d/m/Y H:i') }}
+											</small>
+										</p>
+									{% endif %}
+								</div>
+							</div>
+							<div class="card-footer bg-transparent border-top-0">
+								<div class="btn-group w-100" role="group">
+									<a href="{{ path('app_comment_edit', {id: comment.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+									<form method="post" action="{{ path('app_comment_delete', {id: comment.id}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+										<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<div class="alert alert-info text-center">
+				<i class="bi bi-info-circle"></i>
+				Aucun commentaire trouvé.
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

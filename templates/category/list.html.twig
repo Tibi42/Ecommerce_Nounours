@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Liste des catégories
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Liste des catégories</h1>
+			<a href="{{ path('app_category_new') }}" class="btn btn-primary">Créer une nouvelle catégorie</a>
+		</div>
+
+		{% if categories|length > 0 %}
+			<div class="row g-4">
+				{% for category in categories %}
+					<div class="col-md-6 col-lg-4">
+						<div class="card h-100 shadow-sm">
+							<div class="card-body">
+								<div class="d-flex justify-content-between align-items-start mb-3">
+									<h5 class="card-title mb-0">{{ category.designation }}</h5>
+									<span class="badge bg-secondary">#{{ category.id }}</span>
+								</div>
+
+								{% if category.icon %}
+									<div class="mb-3">
+										<span class="fs-4">{{ category.icon }}</span>
+									</div>
+								{% endif %}
+
+								<div class="mb-3">
+									{% if category.slug %}
+										<p class="card-text mb-2">
+											<strong>Slug:</strong>
+											<code class="small">{{ category.slug }}</code>
+										</p>
+									{% endif %}
+									{% if category.description %}
+										<p class="card-text mb-2">
+											<strong>Description:</strong>
+											<span class="text-muted">
+												{{ category.description|length > 100 ? category.description|slice(0, 100) ~ '...' : category.description }}
+											</span>
+										</p>
+									{% endif %}
+									{% if category.createdAt %}
+										<p class="card-text mb-0">
+											<small class="text-muted">
+												<strong>Créé le:</strong>
+												{{ category.createdAt|date('d/m/Y H:i') }}
+											</small>
+										</p>
+									{% endif %}
+								</div>
+							</div>
+							<div class="card-footer bg-transparent border-top-0">
+								<div class="btn-group w-100" role="group">
+									<a href="{{ path('app_category_edit', {id: category.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+									<form method="post" action="{{ path('app_category_delete', {id: category.id}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+										<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<div class="alert alert-info text-center">
+				<i class="bi bi-info-circle"></i>
+				Aucune catégorie trouvée.
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}
