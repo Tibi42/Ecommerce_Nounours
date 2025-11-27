@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/team')]
 final class TeamController extends AbstractController
 {
-    #[Route(name: 'app_team_index', methods: ['GET'])]
+    #[Route('', name: 'app_team_index', methods: ['GET'])]
     public function index(TeamRepository $teamRepository): Response
     {
         return $this->render('team/index.html.twig', [
@@ -71,18 +71,12 @@ final class TeamController extends AbstractController
     #[Route('/{id}', name: 'app_team_delete', methods: ['POST'])]
     public function delete(Request $request, Team $team, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $team->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($team);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/', name: 'app_team_list', methods: ['GET'])]
-    public function list(TeamRepository $teamRepository): Response
-    {
-        return $this->render('team/list.html.twig', [
-            'teams' => $teamRepository->findAll(),
-        ]);
-    }
+    
 }

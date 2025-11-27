@@ -29,6 +29,12 @@ class Category
     #[ORM\Column]
     private ?\DateTime $createdAt = null;
 
+    #[ORM\Column]
+    private ?bool $isApproved = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $authorEmail = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +96,30 @@ class Category
     public function setCreatedAt(\DateTime $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function isApproved(): ?bool
+    {
+        return $this->isApproved;
+    }
+
+    public function setIsApproved(bool $isApproved): static
+    {
+        $this->isApproved = $isApproved;
+
+        return $this;
+    }
+
+    public function getAuthorEmail(): ?string
+    {
+        return $this->authorEmail;
+    }
+
+    public function setAuthorEmail(?string $authorEmail): static
+    {
+        $this->authorEmail = $authorEmail;
 
         return $this;
     }

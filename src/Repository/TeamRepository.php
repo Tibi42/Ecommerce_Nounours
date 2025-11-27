@@ -42,7 +42,7 @@ class TeamRepository extends ServiceEntityRepository
     //    }
     public function findAll(): array
     {
-        return $this->findAll();
+        return parent::findAll();
     }
 
     public function findFirstTeam(): ?Team

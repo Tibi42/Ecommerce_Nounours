@@ -13,7 +13,7 @@ use App\Repository\NounoursRepository;
 
 final class ArticleController extends AbstractController
 {
-    #[Route('/article', name: 'app_article')]
+    #[Route('/', name: 'app_article')]
     public function index(): Response
     {
         return $this->render('article/index.html.twig', [
