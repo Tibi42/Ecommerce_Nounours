@@ -20,8 +20,20 @@ class NounoursType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('size')
-            ->add('price')
+            ->add('size' , TextType::class, [
+                'label' => 'Taille',
+                'attr' => [
+                    'placeholder' => 'Entrez la taille',
+                    'class' => 'form-control',
+                ],
+            ])
+            ->add('price', TextType::class, [
+                'label' => 'Prix',
+                'attr' => [
+                    'placeholder' => 'Entrez le prix',
+                    'class' => 'form-control',
+                ],
+            ])
             ->add('publishAt')
             ->add('ispublished')
         ;

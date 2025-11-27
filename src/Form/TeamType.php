@@ -12,9 +12,27 @@ class TeamType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('role')
-            ->add('isActive')
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
+                'attr' => [
+                    'placeholder' => 'Entrez le nom',
+                    'class' => 'form-control',
+                ],
+            ])
+            ->add('role', TextType::class, [
+                'label' => 'Role',
+                'attr' => [
+                    'placeholder' => 'Entrez le role',
+                    'class' => 'form-control',
+                ],
+            ])
+            ->add('isActive', CheckboxType::class, [
+                'label' => 'Actif',
+                'attr' => [
+                    'placeholder' => 'Entrez si le team est actif',
+                    'class' => 'form-control',
+                ],
+            ])
         ;
     }
 

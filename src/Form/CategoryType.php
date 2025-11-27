@@ -8,13 +8,14 @@ use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('designation', TextType::class, [
+            ->add('designation', TextareaType::class, [
                 'label' => 'Designation',
                 'attr' => [
                     'placeholder' => 'Entrez la designation',
@@ -28,7 +29,7 @@ class CategoryType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('description', TextType::class, [
+            ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'attr' => [
                     'placeholder' => 'Entrez la description',
